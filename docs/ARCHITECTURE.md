@@ -7,7 +7,7 @@
 | Does not decide | Scope and priority (`docs/PRD.md`), metric formulas (`docs/TESTING.md`), visuals (`docs/DESIGN.md`) |
 | Status | Draft v1 · 24 Nov 2026. Written outside Kiro as input to spec mode. When a Kiro spec's `design.md` refines an interface, update this file to match |
 
-Facts marked **UNVERIFIED (Ux)** come from the PRD's list in section 12 and must be checked before code depends on them.
+Provider facts (endpoints, message shapes, audio formats) are in `.kiro/steering/providers.md`, checked against official docs on 24 Nov 2026.
 
 ---
 
@@ -209,7 +209,7 @@ interface PhoneTransport {   // Exotel, Twilio, simulator
 }
 ```
 
-TTS cancel without in-band support (Sarvam, FR-A3): stop forwarding audio, close the socket, open a fresh socket for the next reply.
+In-band cancel: Workers AI Aura (`Clear`) and ElevenLabs (`close_context`) support it. Sarvam does not (FR-A3): stop forwarding audio, close the socket, open a fresh socket for the next reply.
 
 Adapters are tested against recorded fixtures; live tests run only with `LIVE=1` (FR-A8).
 
@@ -219,16 +219,16 @@ A provider error or a 3 s silence on a stream that should be producing moves the
 
 | Role | Chain |
 |---|---|
-| STT | Sarvam (hi, gu, en) → Workers AI (en only; for hi/gu the bot apologises and switches to English) |
-| LLM | Workers AI → Sarvam LLM → Bedrock (P2) |
-| TTS (en) | ElevenLabs → Sarvam → Workers AI |
-| TTS (hi, gu) | Sarvam → Workers AI only if it supports the language **UNVERIFIED (U8)**; otherwise apologise in text |
+| STT | Sarvam realtime → Sarvam legacy → Workers AI Nova-3 (covers en and hi; for gu the bot apologises and switches to English) |
+| LLM | Workers AI `glm-4.7-flash` → Sarvam `sarvam-105b` → Bedrock (P2) |
+| TTS (en) | ElevenLabs → Workers AI Aura → Sarvam |
+| TTS (hi, gu) | Sarvam only (Workers AI has no Hindi or Gujarati voice). If Sarvam fails, the bot says sorry in English with Aura and offers English |
 
 ## 9. Phone doorways
 
-**Exotel AgentStream** (P1). Bidirectional WebSocket. Media is base64 PCM16 in JSON `media` events; outbound chunks must be within the size limits and a multiple of 320 bytes; we send 100 ms chunks (FR-O9). `clear` drops queued audio; `mark` reports playback position. Sample rate (8 vs 16 kHz) on our account, event names and the exact JSON shapes are **UNVERIFIED (U5)**: confirm from Exotel's docs and one test call before writing the adapter.
+**Exotel AgentStream** (P1). Exotel opens a WebSocket to our `/session/:id/exotel` endpoint, with `?sample-rate=16000` on the URL (the default is 8 kHz). Media is base64 16-bit PCM inside JSON `media` events. Outbound chunks must be 3200 bytes to 100 KB and a multiple of 320 bytes; we send 100 ms chunks (3200 bytes at 16 kHz), because `clear` only drops audio that has not started playing. `mark` reports playback position, which gives the stop acknowledgement on the phone. Exact shapes: `.kiro/steering/providers.md`.
 
-**Twilio Media Streams** (P1 backup). `<Connect><Stream>` from TwiML. Inbound and outbound media are base64 8 kHz mu-law. Outbound `{"event":"media","streamSid":…,"media":{"payload":…}}`, `{"event":"clear","streamSid":…}`, `{"event":"mark",…}`. Trial limits from India are **UNVERIFIED (U6)**.
+**Twilio Media Streams** (P1 backup). `<Connect><Stream>` from TwiML. Audio both ways is base64 `audio/x-mulaw` at 8 kHz. Outbound `{"event":"media","streamSid":…,"media":{"payload":…}}`, `{"event":"clear","streamSid":…}`, `{"event":"mark",…}`; after `clear`, Twilio returns pending marks. Trial accounts can only call verified numbers.
 
 **Simulator.** Same Oracle logic and the same `PhoneTransport` interface. Audio is band-limited to 300–3400 Hz and resampled to 8 kHz in the browser so it sounds and behaves like a phone (FR-O5).
 

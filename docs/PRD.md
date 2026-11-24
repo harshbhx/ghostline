@@ -38,7 +38,7 @@ If two documents disagree, the table above decides. Then fix the other document.
 2. Build **P0** first. Do not start a P1 or P2 item unless its GitHub issue is open.
 3. If a fact is not in this PRD or in the linked documents, **ask**. Do not guess.
 4. A number marked "target" is a goal. It is never a result. Results come only from the bench, with a `run_id`.
-5. Anything marked **UNVERIFIED** must be checked against the linked doc or a live test before code depends on it.
+5. Provider facts come from `.kiro/steering/providers.md` (checked 24 Nov 2026, with sources). If a provider behaves differently, check its docs and update that file.
 
 ---
 
@@ -246,7 +246,7 @@ Only E10 may be used as a performance claim in the submission.
 | App 1 | `apps/dead-air-fm/` | Browser AI radio host | P0 |
 | App 2 | `apps/missed-call-oracle/` | Phone Q&A with simulator | P0 (simulator) / P1 (real phone) / P2 (callback) |
 | Bench | `bench/` | Fake caller, clip set, metrics, naive vs Ghostline | P0 (clips) / P1 (100 synthetic calls) |
-| Kiro power | `power/` | POWER.md, steering, `ghostline-mcp`, hook installer | P1 (first in line) |
+| Kiro power | `power/` | `plugin.json`, skills, `ghostline-mcp`, hook installer | P1 (first in line) |
 | Open data | `bench/hf/` | Hugging Face dataset and dashboard Space | P1 |
 | Crew Exorcist | separate repo | Kiro Crew bot that runs a nightly check and files a report | P2 |
 
@@ -343,7 +343,7 @@ Columns: **Pri** = priority. **Verified by** = the test or check that proves it.
 | FR-O6 | Version 1 has no live data. Asked for live facts (today's prices, weather), the Oracle says it cannot check live information yet. | P0 | Prompt test with 3 sample questions |
 | FR-O7 | For health, legal or emergency questions the Oracle gives general information only and tells the caller to contact a doctor, a lawyer or the local emergency number. It never gives a diagnosis or a medicine dose. | P0 | Prompt test with 3 sample questions |
 | FR-O8 | The console shows call status, language, phase, estimated barge-in time and transcript. | P0 | Component test |
-| FR-O9 | Real phone calls through Exotel. Media is sent in 100 ms chunks that follow Exotel's size rules. | P1 | Property O1 + one recorded real call |
+| FR-O9 | Real phone calls through Exotel at 16 kHz. Media is sent in 100 ms chunks (3200 bytes; Exotel allows 3200 B – 100 KB in multiples of 320 B). | P1 | Property O1 + one recorded real call |
 | FR-O10 | Twilio Media Streams as backup when Exotel is not enabled. | P1 | Fixture test + one real call |
 | FR-O11 | A phone call ends politely after 5 minutes. | P1 | Fake-clock test |
 | FR-O12 | Phone numbers are stored only as salted SHA-256 hashes. | P1 | Unit |
@@ -353,7 +353,7 @@ Columns: **Pri** = priority. **Verified by** = the test or check that proves it.
 
 | ID | Requirement | Pri | Verified by |
 |---|---|---|---|
-| FR-P1 | `power/POWER.md` follows the current Kiro power format and tells Kiro when to use each tool. | P1 | Front-matter lint script |
+| FR-P1 | `power/` follows Kiro's Agent Plugins format (`plugin.json`, `mcp.json`, `skills/`) and tells Kiro when to use each tool. | P1 | Manifest lint script |
 | FR-P2 | `simulate_interruption` runs the pure core with a synthetic scenario (backchannel, cough, real interruption, stop word, during thinking) and returns the action log and pass or fail. It makes no network calls. | P1 | Unit: deterministic output |
 | FR-P3 | `get_turn_traces` returns recorded traces and a summary: n, barge-in p50 and p95, false stops, missed stops, time-to-first-audio p50. | P1 | Fixture test |
 | FR-P4 | `scaffold_voice_app` creates `apps/<name>` from a template. The new app compiles and passes its tests. It never overwrites an existing folder. | P1 | Temp-folder build test |
@@ -475,10 +475,30 @@ Full visual rules are in `docs/DESIGN.md`. These are the product-level rules:
 - A3 Hosting on Cloudflare is allowed. Nothing in the rules read so far forbids it.
 - A4 A Durable Object can hold one inbound WebSocket and two or three outbound provider WebSockets for a whole call with acceptable delay. The day-1 spike tests this.
 
-### Unverified facts (check before code depends on them)
+### Checked facts (24 Nov 2026)
 
-| ID | Fact to check | Where |
+Every open question that public docs can answer was checked against the official source on 24 Nov 2026. The exact values (endpoints, message shapes, audio formats) live in `.kiro/steering/providers.md`; this table records the outcome.
+
+| ID | Question | Answer | Source |
+|---|---|---|---|
+| U1 | Sarvam realtime STT | `wss://api.sarvam.ai/speech-to-text-realtime/ws`, model `saaras:v4`, `sample_rate` 8000 or 16000, `gu-IN` supported, `transcript.partial` / `transcript.final` events | docs.sarvam.ai realtime streaming |
+| U2 | Sarvam TTS sample-rate field | `speech_sample_rate` (8000, 16000, 22050, 24000) in the `config` message; codec `linear16`; no in-band cancel | docs.sarvam.ai TTS WebSocket |
+| U3 | Sarvam LLM | `POST https://api.sarvam.ai/v1/chat/completions`, `sarvam-105b`; `sarvam-m` deprecated | docs.sarvam.ai chat completions |
+| U5 | Exotel | Default 8 kHz, 16 kHz via `?sample-rate=16000`; chunks 3200 B – 100 KB, multiple of 320 B; `clear` drops only unplayed audio; Basic Auth in the URL or IP allow-list | developer.exotel.com AgentStream |
+| U6 | Twilio trial | Calls only to and from verified caller IDs (verified by SMS); 8 kHz mu-law media | twilio.com docs and support |
+| U7 | Kiro | Hooks are `.kiro/hooks/<id>.json` (`version: "v1"`); file triggers fire only on agent edits; remote MCP uses `url` + `headers` in `.kiro/settings/mcp.json`; powers use the Agent Plugins format (`plugin.json`), hooks are not part of it, so they ship through `install-hooks` | kiro.dev/docs |
+| U8 | Workers AI | STT `@cf/deepgram/nova-3` (en, hi; no gu); TTS `@cf/deepgram/aura-1` / `aura-2-en` (English, supports `Clear`); LLM `@cf/zai-org/glm-4.7-flash`; Cloudflare docs MCP `https://docs.mcp.cloudflare.com/mcp` | developers.cloudflare.com |
+| U9 | Hackathon rules | Any Kiro app counts (IDE, CLI, Web, Crew). More than one entry is allowed if each is substantially different. Pre-existing code or work must be disclosed. Best Kiro Crew App needs its own separate repo. Video under 3 minutes on YouTube. `/.kiro` at the root, never ignored | kiroween.devpost.com/rules |
+
+**Account checks** (public docs cannot answer these; each takes one call or one email):
+
+| ID | Check | How |
 |---|---|---|
+| U4 | Sarvam credits work on the raw STT and TTS APIs (assumption A1) | One live call each with your key |
+| U5b | Exotel: Voicebot applet enabled; app server allowed on Cloudflare; webhook on an unanswered call | Exotel support reply; one test call |
+| U6b | Twilio: whether your trial number can reach an Indian mobile | Twilio console, one test call |
+
+---|---|---|
 | U1 | Sarvam realtime STT event names and query parameters | docs.sarvam.ai realtime STT reference |
 | U2 | The sample-rate field in the Sarvam TTS WebSocket config | docs.sarvam.ai TTS streaming reference |
 | U3 | Sarvam LLM endpoint URL and model IDs | docs.sarvam.ai chat completions |
@@ -654,7 +674,7 @@ About **50 Kiro tasks** in total. Drafts exist for specs 1, 4, 5, 6 and 7. **Dra
 |---|---|---|---|
 | 1 | Accounts and keys: Kiro credits and ID check, Cloudflare, Sarvam key (one live test call), ElevenLabs key, Hugging Face token | P0 | Me |
 | 2 | Exotel sign-up, KYC and enablement email; Twilio trial as backup | P0 | Me |
-| 3 | Ask the organizers the open rule questions in Discord (U9) | P0 | Me |
+| 3 | Account checks U4, U5b, U6b (section 12) | P0 | Me |
 | 4 | Repo bootstrap: license, workspace, TypeScript config, CI that runs tests without keys | P0 | Kiro |
 | 5 | Add planning docs, `AGENTS.md` and steering files; spec drafts into `docs/drafts/` | P0 | Me |
 | 6 | Spike: audio round trip on Cloudflare (Gate A) | P0 | Both |
@@ -683,7 +703,7 @@ About **50 Kiro tasks** in total. Drafts exist for specs 1, 4, 5, 6 and 7. **Dra
 
 | # | Issue | Pri | Owner |
 |---|---|---|---|
-| 17 | Sarvam STT and TTS adapters; live check of U1, U2, U4 | P0 | Both |
+| 17 | Sarvam STT and TTS adapters; live check U4 | P0 | Both |
 | 18 | Dead Air FM: spec, radio loop, persona (FR-F1 – F5) | P0 | Kiro |
 | 19 | Dead Air FM: console (FR-F6 – F9, FR-W5) | P0 | Both |
 | 20 | Simulator doorway and Oracle logic (FR-O1 – O7) | P0 | Kiro |

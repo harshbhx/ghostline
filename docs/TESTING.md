@@ -36,7 +36,7 @@ Each property runs at least 200 generated cases. A failing seed is copied into a
 | P5 | Every turn produces exactly one `TurnTrace`, and its times are non-decreasing in the order speechStart ≤ endOfTurn ≤ llmFirstToken ≤ firstAudio where present (FR-C12) | Random sessions |
 | P6 | `step` is deterministic: same state, event, now and config give the same result (FR-C2) | Random states and events, run twice |
 | P7 | Resampling 8↔16↔24 kHz preserves length within one sample per conversion; mu-law encode then decode stays within the mu-law quantisation error (FR-C14) | Random PCM16 buffers |
-| O1 | Exotel outbound chunks are always within the allowed size and a multiple of 320 bytes (FR-O9) | Random audio lengths |
+| O1 | Exotel outbound chunks are always 3200 bytes to 100 KB and a multiple of 320 bytes, and no audio is lost or duplicated by chunking (FR-O9) | Random audio lengths |
 | O2 | Callback: at most one call per number per 10 minutes; a bad token never places a call (FR-O13) | Random webhook sequences |
 
 Exact-order test (FR-C6): on a confirmed interruption the action list equals `[duck, stop_playback, cancel_llm, cancel_tts, clear_transport, commit_turn]` for that turn.
