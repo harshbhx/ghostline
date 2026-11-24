@@ -25,7 +25,7 @@ Ask a question by voice on any phone, in Hindi, Gujarati or English, and hear a 
 2. THE console SHALL show call status, language, phase, estimated barge-in time and the transcript; Hindi and Gujarati lines carry `lang`.
 
 ### Requirement 5: Real phone (FR-O9 – FR-O12, P1)
-1. Exotel: media in 100 ms chunks that follow Exotel's size rules (property O1). Facts confirmed first (U5).
+1. Exotel at 16 kHz (`?sample-rate=16000`): media in 100 ms chunks of 3200 bytes; every chunk 3200 B – 100 KB and a multiple of 320 B (property O1).
 2. Twilio Media Streams as backup only if Exotel is not enabled.
 3. A phone call SHALL end politely after 5 minutes.
 4. Phone numbers SHALL be stored only as salted SHA-256 hashes.
