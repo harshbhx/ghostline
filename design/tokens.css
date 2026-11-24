@@ -1,0 +1,282 @@
+/* Ghostline design tokens v3 — generated from tokens.json. Do not edit by hand.
+   Parent: Graphite + Blue (dark, light). Child: Dead Air FM (deadair) inherits dark and overrides a few tokens.
+   Fonts: Geist (text and headings), Geist Mono (code, numbers), Instrument Serif (Dead Air FM only). */
+
+:root, [data-theme="dark"] {
+  --gray-0: #ffffff;
+  --gray-50: #fafafa;
+  --gray-100: #f2f2f2;
+  --gray-150: #ededed;
+  --gray-200: #e8e8e8;
+  --gray-300: #d1d1d1;
+  --gray-400: #a1a1a1;
+  --gray-500: #8f8f8f;
+  --gray-550: #737373;
+  --gray-600: #5e5e5e;
+  --gray-700: #3a3a3a;
+  --gray-750: #262626;
+  --gray-800: #1a1a1a;
+  --gray-850: #111111;
+  --gray-900: #0a0a0a;
+  --blue-50: #eef4ff;
+  --blue-100: #dbe7ff;
+  --blue-200: #b9d1ff;
+  --blue-300: #8ab8ff;
+  --blue-400: #5b9bff;
+  --blue-500: #2f6fef;
+  --blue-600: #1f5fd6;
+  --blue-700: #174bb0;
+  --blue-800: #133c8a;
+  --blue-900: #0f2b5e;
+  --blue-950: #0c1830;
+  --orange-50: #fff1eb;
+  --orange-100: #ffe0d1;
+  --orange-300: #ffb08f;
+  --orange-400: #ff6a33;
+  --orange-600: #c8400f;
+  --orange-700: #a5340b;
+  --orange-800: #8a2a07;
+  --orange-900: #4a1a08;
+  --orange-950: #2a140c;
+  --amber-50: #fdf4e1;
+  --amber-300: #f3cc7c;
+  --amber-400: #e8b04a;
+  --amber-700: #8a5a00;
+  --amber-800: #6b4500;
+  --amber-950: #271d08;
+  --night-0: #ece6da;
+  --night-300: #958f86;
+  --night-600: #45423e;
+  --night-750: #2a2826;
+  --night-800: #1d1c1b;
+  --night-850: #131418;
+  --night-900: #0c0d10;
+  --night-950: #06070a;
+  --valve-300: #ffd29c;
+  --valve-400: #ffb257;
+  --valve-500: #ff5a2e;
+  --bg: var(--gray-900);
+  --surface: var(--gray-850);
+  --surface-raised: var(--gray-800);
+  --surface-overlay: var(--gray-800);
+  --line: var(--gray-750);
+  --line-strong: var(--gray-700);
+  --line-control: var(--gray-550);
+  --text: var(--gray-150);
+  --text-muted: var(--gray-400);
+  --text-faint: var(--gray-550);
+  --accent: var(--blue-400);
+  --accent-hover: var(--blue-300);
+  --accent-fill: var(--blue-500);
+  --accent-fill-hover: var(--blue-600);
+  --on-accent: var(--gray-0);
+  --accent-soft: var(--blue-950);
+  --accent-soft-text: var(--blue-300);
+  --alarm: var(--orange-400);
+  --alarm-soft: var(--orange-950);
+  --alarm-soft-text: var(--orange-300);
+  --amber: var(--amber-400);
+  --amber-soft: var(--amber-950);
+  --amber-soft-text: var(--amber-300);
+  --state-speaking: var(--gray-150);
+  --state-thinking: var(--gray-400);
+  --state-heard: var(--orange-400);
+  --state-listening: var(--blue-400);
+  --mark-eye: var(--blue-400);
+  --on-air: var(--orange-400);
+  --glow: #5b9bff1f;
+  --focus: var(--blue-400);
+  --selection: var(--blue-900);
+  --code-bg: var(--gray-850);
+  --code-line: var(--gray-750);
+  --syn-text: var(--gray-150);
+  --syn-comment: var(--gray-500);
+  --syn-keyword: var(--blue-300);
+  --syn-type: var(--blue-200);
+  --syn-string: var(--amber-300);
+  --syn-number: var(--orange-300);
+  --syn-property: var(--gray-400);
+  --shadow-none: none;
+  --shadow-overlay: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: var(--gray-0);
+  --surface: var(--gray-50);
+  --surface-raised: var(--gray-100);
+  --surface-overlay: var(--gray-0);
+  --line: var(--gray-200);
+  --line-strong: var(--gray-300);
+  --line-control: var(--gray-500);
+  --text: var(--gray-900);
+  --text-muted: var(--gray-600);
+  --text-faint: var(--gray-500);
+  --accent: var(--blue-600);
+  --accent-hover: var(--blue-700);
+  --accent-fill: var(--blue-600);
+  --accent-fill-hover: var(--blue-700);
+  --on-accent: var(--gray-0);
+  --accent-soft: var(--blue-50);
+  --accent-soft-text: var(--blue-700);
+  --alarm: var(--orange-600);
+  --alarm-soft: var(--orange-50);
+  --alarm-soft-text: var(--orange-800);
+  --amber: var(--amber-700);
+  --amber-soft: var(--amber-50);
+  --amber-soft-text: var(--amber-800);
+  --state-speaking: var(--gray-900);
+  --state-thinking: var(--gray-600);
+  --state-heard: var(--orange-600);
+  --state-listening: var(--blue-600);
+  --mark-eye: var(--blue-600);
+  --on-air: var(--orange-600);
+  --glow: #1f5fd60f;
+  --focus: var(--blue-600);
+  --selection: var(--blue-100);
+  --code-bg: var(--gray-850);
+  --code-line: var(--gray-750);
+  --syn-text: var(--gray-150);
+  --syn-comment: var(--gray-500);
+  --syn-keyword: var(--blue-300);
+  --syn-type: var(--blue-200);
+  --syn-string: var(--amber-300);
+  --syn-number: var(--orange-300);
+  --syn-property: var(--gray-400);
+  --shadow-none: none;
+  --shadow-overlay: 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  color-scheme: light;
+}
+
+/* Child theme. Put data-theme="deadair" on the Dead Air FM root. Everything not listed here comes from the dark parent. */
+[data-theme="deadair"] {
+  --bg: var(--night-950);
+  --surface: var(--night-900);
+  --surface-raised: var(--night-850);
+  --surface-overlay: var(--night-850);
+  --line: var(--night-800);
+  --line-strong: var(--night-750);
+  --text: var(--night-0);
+  --text-muted: var(--night-300);
+  --text-faint: var(--night-600);
+  --accent-fill: var(--night-0);
+  --accent-fill-hover: var(--gray-0);
+  --on-accent: var(--night-950);
+  --alarm: var(--valve-500);
+  --state-speaking: var(--valve-400);
+  --state-thinking: var(--night-300);
+  --state-heard: var(--valve-500);
+  --mark-eye: var(--valve-400);
+  --on-air: var(--valve-400);
+  --glow: #ffb25740;
+  --code-bg: var(--night-900);
+  --code-line: var(--night-800);
+  --syn-text: var(--night-0);
+  --syn-comment: var(--night-300);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg: var(--gray-0);
+    --surface: var(--gray-50);
+    --surface-raised: var(--gray-100);
+    --surface-overlay: var(--gray-0);
+    --line: var(--gray-200);
+    --line-strong: var(--gray-300);
+    --line-control: var(--gray-500);
+    --text: var(--gray-900);
+    --text-muted: var(--gray-600);
+    --text-faint: var(--gray-500);
+    --accent: var(--blue-600);
+    --accent-hover: var(--blue-700);
+    --accent-fill: var(--blue-600);
+    --accent-fill-hover: var(--blue-700);
+    --on-accent: var(--gray-0);
+    --accent-soft: var(--blue-50);
+    --accent-soft-text: var(--blue-700);
+    --alarm: var(--orange-600);
+    --alarm-soft: var(--orange-50);
+    --alarm-soft-text: var(--orange-800);
+    --amber: var(--amber-700);
+    --amber-soft: var(--amber-50);
+    --amber-soft-text: var(--amber-800);
+    --state-speaking: var(--gray-900);
+    --state-thinking: var(--gray-600);
+    --state-heard: var(--orange-600);
+    --state-listening: var(--blue-600);
+    --mark-eye: var(--blue-600);
+    --on-air: var(--orange-600);
+    --glow: #1f5fd60f;
+    --focus: var(--blue-600);
+    --selection: var(--blue-100);
+    --code-bg: var(--gray-850);
+    --code-line: var(--gray-750);
+    --syn-text: var(--gray-150);
+    --syn-comment: var(--gray-500);
+    --syn-keyword: var(--blue-300);
+    --syn-type: var(--blue-200);
+    --syn-string: var(--amber-300);
+    --syn-number: var(--orange-300);
+    --syn-property: var(--gray-400);
+    --shadow-none: none;
+    --shadow-overlay: 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+    color-scheme: light;
+  }
+}
+
+:root {
+  --font-display: Geist, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: Geist, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --space-0_5: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+  --size-header: 64px;
+  --size-sidebar: 264px;
+  --size-toc: 224px;
+  --size-prose: 720px;
+  --size-page: 1360px;
+  --size-hit: 44px;
+  --fx-grain: 0.07;
+  --fx-scanline: 0.18;
+  --fx-vignette: 0.65;
+}
+
+.t-display-xl { font-family: var(--font-display); font-size: 72px; line-height: 72px; font-weight: 600; letter-spacing: -0.035em; }
+.t-display-l { font-family: var(--font-display); font-size: 48px; line-height: 52px; font-weight: 600; letter-spacing: -0.03em; }
+.t-h1 { font-family: var(--font-display); font-size: 40px; line-height: 46px; font-weight: 600; letter-spacing: -0.025em; }
+.t-h2 { font-family: var(--font-display); font-size: 28px; line-height: 34px; font-weight: 600; letter-spacing: -0.02em; }
+.t-h3 { font-family: var(--font-sans); font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+.t-h4 { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600; letter-spacing: 0em; }
+.t-body-l { font-family: var(--font-sans); font-size: 18px; line-height: 30px; font-weight: 400; letter-spacing: 0em; }
+.t-body { font-family: var(--font-sans); font-size: 16px; line-height: 27px; font-weight: 400; letter-spacing: 0em; }
+.t-body-s { font-family: var(--font-sans); font-size: 14px; line-height: 22px; font-weight: 400; letter-spacing: 0em; }
+.t-caption { font-family: var(--font-sans); font-size: 13px; line-height: 20px; font-weight: 400; letter-spacing: 0em; }
+.t-label { font-family: var(--font-sans); font-size: 13px; line-height: 18px; font-weight: 500; letter-spacing: 0em; }
+.t-code { font-family: var(--font-mono); font-size: 14px; line-height: 24px; font-weight: 400; letter-spacing: 0em; }
+.t-data-xl { font-family: var(--font-mono); font-size: 44px; line-height: 48px; font-weight: 500; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.t-data { font-family: var(--font-mono); font-size: 16px; line-height: 24px; font-weight: 500; letter-spacing: 0em; font-variant-numeric: tabular-nums; }
+.t-station { font-family: var(--font-serif); font-size: 168px; line-height: 151px; font-weight: 400; letter-spacing: -0.03em; }
+.t-transcript { font-family: var(--font-serif); font-size: 40px; line-height: 52px; font-weight: 400; letter-spacing: -0.01em; }
+.t-transcript-s { font-family: var(--font-serif); font-size: 27px; line-height: 35px; font-weight: 400; letter-spacing: 0em; }
+.t-dial { font-family: var(--font-mono); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::selection { background: var(--selection); }
