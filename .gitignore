@@ -1,0 +1,37 @@
+# Dependencies and builds
+node_modules/
+dist/
+build/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Cloudflare
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# Secrets: never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# Bench outputs (raw audio and runs stay local until consent is checked)
+bench/out/
+bench/clips/raw/
+*.wav.tmp
+
+# Python (Hugging Face scripts)
+__pycache__/
+.venv/
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# Note: /.kiro is committed on purpose and must never be ignored.
