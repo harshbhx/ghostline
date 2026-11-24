@@ -17,7 +17,7 @@ If two documents disagree, the PRD's source-of-truth map decides. Then fix the o
 1. **P0 first.** Do not start P1 or P2 work unless its GitHub issue is open.
 2. **One task at a time.** Finish, test, then stop. Do not regenerate whole specs.
 3. **Never invent a number.** Results come only from the bench with a `run_id`. Otherwise write `—` (UI) or `<measure>` (docs).
-4. **UNVERIFIED facts** (PRD section 12) must be checked against the provider's docs or a live test before code depends on them. Update `.kiro/steering/providers.md` with what you found.
+4. **Provider facts** come from `.kiro/steering/providers.md` (checked against official docs, with sources). Never guess an endpoint or message shape; if something is missing or a provider behaves differently, check its docs and update that file in the same commit.
 5. **No secrets in code or git.** Use `wrangler secret` or `.dev.vars`. Never write to `.env*`, `.dev.vars*` or anything under `secrets/`.
 6. **Tests run without keys.** Live tests only behind `LIVE=1`.
 7. **The core is pure.** `skeleton/` has no network, storage, timers or clock calls.
@@ -34,7 +34,7 @@ adapters/            Workers AI, Sarvam, ElevenLabs, Exotel, Twilio, (Bedrock)
 apps/dead-air-fm/    app 1, browser radio host (theme: deadair)
 apps/missed-call-oracle/  app 2, phone Q&A + simulator (parent theme)
 bench/               fake caller, clips manifest, metrics, runner, hf/
-power/               Kiro power: POWER.md, steering, ghostline-mcp, hook installer
+power/               Kiro power: plugin.json, skills, mcp.json (ghostline-mcp), hook installer
 docs/                PRD, architecture, testing, design, drafts, kiro-usage
 design/              tokens.css, tokens.json
 assets/brand/        logo kit

@@ -11,7 +11,7 @@ web-kit/src/         capture.worklet.ts, playback.ts, duck.ts, widgets/*, index.
 adapters/src/        workers-ai/*, sarvam/*, elevenlabs/*, exotel/*, twilio/*, index.ts
 apps/<name>/         app logic + UI; one wrangler config per app
 bench/               clips/manifest.json, runner.ts, metrics.ts, report.ts, hf/
-power/               POWER.md, steering/, mcp/ (ghostline-mcp), install-hooks.ts
+power/               plugin.json, mcp.json, skills/, mcp/ (ghostline-mcp source), install-hooks.ts
 ```
 
 - Interfaces and message shapes: `docs/ARCHITECTURE.md`. Do not invent new message types; add them there first.
